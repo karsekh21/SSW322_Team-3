@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>TaqticsTestMC</title>
+    <meta name="description" content="Test Page">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+</head>
+
+
+<style>
+body{
+ padding-top: 40px
+ padding-bottom: 40px
+}
+</style>
+
+<body>
+
+    <div class="container">
+      <section>
+        <div class="page-header">
+          <h2>Multiple Choice Question</h2>
+        </div>
+
+          <!-- Allow user to enter needed info to create a MC question -->
+          <div class="row">
+            <div class="col-lg-6">
+              <form>
+
+                <div class="form-group">
+                  <label for="exampleFormControlInput1">Form ID</label>
+                  <input type="text" class="form-control" id="formId">
+                </div>
+
+                <div class="form-group">
+                  <label for="exampleFormControlTextarea1">Mult Choice Question Prompt</label>
+                  <textarea class="form-control" id="mcQuestionPrompt" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label for="exampleFormControlInput1">Choice 1</label>
+                  <input type="text" class="form-control" id="mcChoice1">
+                </div>
+
+                <div class="form-group">
+                  <label for="exampleFormControlInput1">Choice 2</label>
+                  <input type="text" class="form-control" id="mcChoice2">
+                </div>
+
+                <div class="form-group">
+                  <label for="exampleFormControlInput1">Choice 3</label>
+                  <input type="text" class="form-control" id="mcChoice3">
+                </div>
+
+                <div class="form-group">
+                  <label for="exampleFormControlInput1">Choice 4</label>
+                  <input type="text" class="form-control" id="mcChoice4">
+                </div>
+
+                <div class="form-group">
+                  <label for="exampleFormControlInput1">Choice 5</label>
+                  <input type="text" class="form-control" id="mcChoice5">
+                </div>
+
+                <div class="form-group">
+                  <label for="exampleFormControlInput1">Correct Choice</label>
+                  <input type="text" class="form-control" id="correctChoice">
+                </div>
+
+                <br>
+                <button type="submit" class="btn btn-primary" id="finishButton">Finish Question</button>
+
+              </form>
+            </div>
+            <br>
+
+        </div> <!-- End of row -->
+      </section>
+    </div> <!-- End of container -->
+
+
+
+    <script src = "questions.js"></script>
+
+    <!-- Try to create a multiple choice question using the info gathered from the user. -->
+    <script>
+      const connection = require("./mongoConnection");
+      const questions = require("./data/questions.js");
+      const mongoCollections = require("./mongoCollections");
+      const questionsdb = mongoCollections.questions;
+
+      async function main() {
+      	const db = await connection();
+
+      	try{
+      		var createMCQ;
+      		createMCQ = await questions.createMCQ(document.getElementById(formId), document.getElementById(mcQuestionPrompt),
+            document.getElementById(mcChoice1),document.getElementById(mcChoice2), document.getElementById(mcChoice3),
+            document.getElementById(mcChoice4), document.getElementById(mcChoice5), document.getElementById(correctChoice));
+      		console.log(createMCQ);
+      	}
+      	catch(e){
+      		console.error(e);
+      	}
+        
+        await db.serverConfig.close();
+
+      }
+
+      main();
+    </script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</body>
+</html>
