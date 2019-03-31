@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Add Question</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <form id="formAddUser" name="addRanking" method="post" action="/addRanking">
+      <input id="inputUserName" type="text" placeholder="Quesiton Prompt" name="newRanking" /><br>
+      <input id="inputUserEmail" type="text" placeholder="Best" name="bestChoice" /><br>
+      <input id="inputUserEmail" type="text" placeholder="Middle" name="middleChoice" /><br>
+      <input id="inputUserEmail" type="text" placeholder="Worst" name="worstChoice" /><br>
+      <button id="btnSubmit" type="submit">Submit</button>
+    </form>
+  </body>
+</html>
