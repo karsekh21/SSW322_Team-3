@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Question List</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>Question List</h1>
+      <%
+        var list = '';
+        for (i = 0; i < questionlist.length; i++) {
+          if (questionlist[i]["correct choice"]) {
+            list += '<p>' + '<strong>' + 'HELLO' + '<br>' + questionlist[i].title + '</strong>' + '<br>' + questionlist[i]["choice 1"] + '<br>' + questionlist[i]["choice 2"] + '<br>' + questionlist[i]["choice 3"] + '<br>' + questionlist[i]["choice 4"] + '<br>' + questionlist[i]["choice 5"] + '<br>' + questionlist[i]["correct choice"] + '</p>';
+          }
+          else if (questionlist[i]["truefalse"]) { 
+            list += '<p>' + '<strong>' + questionlist[i].title + '</strong>' + '<br>' + '<input type="radio" name="tOrF" value="true">' + "True" + '<br>' + '<input type="radio" name="tOrF" value="false">' + "False" + '</p>';
+          }
+          else if (questionlist[i]["truefalse2"]) { 
+            console.log(questionlist[i].correctAnswer);
+            list += '<p>' + '<strong>' + questionlist[i].title2 + '</strong>' + '<br>' + '<input type="radio" name="tOrF" value="true">' + "True" + '<br>' + '<input type="radio" name="tOrF" value="false">' + "False" + '<br>' + "Correct Answer: " + questionlist[i].correctAnswer2 + '</p>';
+          }
+          else if (questionlist[i]["essay"]){
+            list += '<p>' + '<strong>' + questionlist[i].title + " The minimum number of words should be " + questionlist[i].minWordCount + ". " + "The maximum number of words should be " + questionlist[i].maxWordCount + "." + '</strong>' + '<br>' + '<input id="essayBox" type="text" style="height:150px;width:500px" placeholder="Type your essay..." name="essayBox" />' + '<br>' + '</p>';
+          }
+          else if (questionlist[i]["shortanswer"]){
+            list += '<p>' + '<strong>' + questionlist[i].title + " The minimum number of words should be " + questionlist[i].minWordCount + ". " + "The maximum number of words should be " + questionlist[i].maxWordCount + "."  + '</strong>' + '<br>' + '<input id="essayBox" type="text" style="height:50px;width:500px" placeholder="Type your answer..." name="shortAnswerBox" />' + '<br>' + '</p>';
+          }
+		  else if(questionlist[i]["ranking"]){
+			list += '<p>' + '<strong>' + questionlist[i].title + '</strong>' + '<br>' + '<input type="text" name="ranking" value="best">' + questionlist[i]["best"] + '<br>' + '<input type="text" name="ranking" value="middle">' + questionlist[i]["middle"] + '<br>' + '<input type="text" name="ranking" value="worst">' + questionlist[i]["worst"] + '</p>';
+		  }
+		  else if(questionlist[i]["matching"]){
+			list += '<p>' + '<strong>' + questionlist[i].title + '</strong>' + '<br>' + '<input type="text" name="matching" value="first">' + questionlist[i]["firstKey"] + "   -   " + questionlist[i]["firstValue"] + '<br>' + '<input type="text" name="matching" value="second">' + questionlist[i]["secondKey"] + "   -   " + questionlist[i]["secondValue"] + '<br>' + '<input type="text" name="matching" value="third">' + questionlist[i]["thirdKey"] + "   -   " + questionlist[i]["thirdValue"] + '</p>';
+		  }
+        }
+        return list;
+      %>
+  </body>
+</html>
