@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Add Question</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <form id="formAddUser" name="addquestion" method="post" action="/addquestion">
+      <input id="inputUserName" type="text" placeholder="Quesiton Prompt" name="newQuestion" />
+      <input id="inputUserEmail" type="text" placeholder="choice 1" name="mcChoice1" />
+      <input id="inputUserEmail" type="text" placeholder="choice 2" name="mcChoice2" />
+      <input id="inputUserEmail" type="text" placeholder="choice 3" name="mcChoice3" />
+      <input id="inputUserEmail" type="text" placeholder="choice 4" name="mcChoice4" />
+      <input id="inputUserEmail" type="text" placeholder="choice 5" name="mcChoice5" />
+      <input id="inputUserEmail" type="text" placeholder="correctAnswer" name="answer" />
+      <button id="btnSubmit" type="submit">Submit</button>
+    </form>
+  </body>
+</html>
