@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('home');
 });
 
 //Get HELLO WORLD PAGE
@@ -34,7 +35,7 @@ router.get('/surveyquestionlist', function(req,res) {
 
 // //Get new user page
 router.get('/newquestion', function(req, res) {
-  res.render('newquestion', { title: 'Add New Multiple Choice Question'});
+  res.render('newquestion', { title: 'Add New Question'});
 });
 
 /* POST to Add User Service */
@@ -57,29 +58,52 @@ router.post('/addquestion', function(req, res) {
 
 
   // Set our collection
-  var collection = db.get('testquestioncollection');
+  var collection = db.get('testcollection');
 
+  var newEntry = {
+    "title" : formTitle,
+    "choice 1": newChoice,
+    "choice 2": newChoice2,
+    "choice 3": newChoice3,
+    "choice 4": newChoice4,
+    "choice 5": newChoice5,
+    "Correct Answer": answer,
+    "testMultChoice": true
+  }
+
+  collection.findOneAndUpdate(
+    {"formType":"Test"},
+    { $addToSet: {"questions": newEntry} }, {returnOriginal: false}, function (err, doc) {
+          if (err) {
+              // If it failed, return error
+              res.send("There was a problem adding the information to the database.");
+          }
+          else {
+              // And forward to success page
+              res.redirect("testquestions");
+          }
+    });
   // Submit to the DB
-  collection.insert({
-      "formId" : formId,
-      "title" : formTitle,
-      "choice 1": newChoice,
-      "choice 2": newChoice2,
-      "choice 3": newChoice3,
-      "choice 4": newChoice4,
-      "choice 5": newChoice5,
-      "Correct Answer": answer,
-      "testMultChoice": true
-  }, function (err, doc) {
-      if (err) {
-          // If it failed, return error
-          res.send("There was a problem adding the information to the database.");
-      }
-      else {
-          // And forward to success page
-          res.redirect("testquestions");
-      }
-  });
+  // collection.insert({
+  //     "formId" : formId,
+  //     "title" : formTitle,
+  //     "choice 1": newChoice,
+  //     "choice 2": newChoice2,
+  //     "choice 3": newChoice3,
+  //     "choice 4": newChoice4,
+  //     "choice 5": newChoice5,
+  //     "Correct Answer": answer,
+  //     "testMultChoice": true
+  // }, function (err, doc) {
+  //     if (err) {
+  //         // If it failed, return error
+  //         res.send("There was a problem adding the information to the database.");
+  //     }
+  //     else {
+  //         // And forward to success page
+  //         res.redirect("testquestions");
+  //     }
+  // });
 });
 
 
@@ -87,7 +111,7 @@ router.post('/addquestion', function(req, res) {
 
 // For Survey Multiple Choice (newmultchoice2)
 router.get('/newmultchoice2', function(req, res) {
-  res.render('newmultchoice2', { title: 'Add New Multiple Choice Question'});
+  res.render('newmultchoice2', { title: 'Add New Survey Mult Choice Question'});
 });
 
 /* POST to Add User Service */
@@ -600,19 +624,34 @@ router.get('/testorsurvey', function(req, res) {
   res.render('testorsurvey', { title: 'Test Or Survey'});
 });
 
-// Question Selection for Tests
+// Test questions
 router.get('/testquestions', function(req, res) {
-  res.render('testquestions', { title: 'Test Questions'});
+  res.render('testquestions', { title: 'Test Or Survey'});
 });
+
+// Question Selection for Tests
+router.get('/testentry', function(req, res) {
+  var db = req.db;
+
+  var collection = db.get('testcollection');
+
+  collection.insert({
+    "formType": "Test",
+    "questions": []
+  });
+
+  res.redirect('testquestions');
+});
+
 
 // Question Selection for Index
 router.get('/surveyquestions', function(req, res) {
   res.render('surveyquestions', { title: 'Survey Questions'});
 });
 
-// Home
-router.get('/home', function(req, res) {
-  res.render('home', { title: 'Home'});
+/*GET generic*/
+router.get('*', function(req, res) {
+  res.redirect('testorsurvey');
 });
 
 module.exports = router;
