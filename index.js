@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var currTest = null;
 
 
 /* GET home page. */
@@ -15,13 +16,24 @@ router.get('/helloworld', function(req,res) {
 //Get Userlist page
 router.get('/testquestionlist', function(req,res) {
   var db = req.db;
-  var collection = db.get('testquestioncollection');
+  var collection = db.get('testcollection'); // 4/10/19
   collection.find({}, {}, function(e, docs) {
     res.render('testquestionlist', {
       "testquestionlist" : docs
     });
   });
 });
+
+// List of Tests
+// router.get('/testlist', function(req,res) {
+//   var db = req.db;
+//   var collection = db.get('testcollection'); // 4/10/19
+//   collection.find({}, {}, function(e, docs) {
+//     res.render('testquestionlist', {
+//       "testquestionlist" : docs
+//     });
+//   });
+// });
 
 router.get('/surveyquestionlist', function(req,res) {
   var db = req.db;
@@ -72,7 +84,7 @@ router.post('/addquestion', function(req, res) {
   }
 
   collection.findOneAndUpdate(
-    {"formType":"Test"},
+    {"testFormName": currTest["testFormName"]},
     { $addToSet: {"questions": newEntry} }, {returnOriginal: false}, function (err, doc) {
           if (err) {
               // If it failed, return error
@@ -224,25 +236,30 @@ router.post('/addessay', function(req, res) {
   var maxWordCount = req.body.maxWordCount;
 
   // Set our collection
-  var collection = db.get('testquestioncollection');
+  var collection = db.get('testcollection');
 
   // Submit to the DB
-  collection.insert({
+  var newEntry = {
       "minWordCount" : minWordCount,
       "maxWordCount" : maxWordCount,
       "formId" : formId,
       "title" : formTitle,
       "essay" : true,
-  }, function (err, doc) {
-      if (err) {
-          // If it failed, return error
-          res.send("There was a problem adding the information to the database.");
-      }
-      else {
-          // And forward to success page
-          res.redirect("testquestions");
-      }
+  }
+
+  collection.findOneAndUpdate(
+  {"testFormName": currTest["testFormName"]},
+  { $addToSet: {"questions": newEntry} }, {returnOriginal: false}, function (err, doc) {
+        if (err) {
+            // If it failed, return error
+            res.send("There was a problem adding the information to the database.");
+        }
+        else {
+            // And forward to success page
+            res.redirect("testquestions");
+        }
   });
+
 });
 
 //For Survey
@@ -301,25 +318,29 @@ router.post('/addshortanswer', function(req, res) {
   var maxWordCount = req.body.maxWordCount;
 
   // Set our collection
-  var collection = db.get('testquestioncollection');
+  var collection = db.get('testcollection');
 
   // Submit to the DB
-  collection.insert({
+  var newEntry = {
       "minWordCount" : minWordCount,
       "maxWordCount" : maxWordCount,
       "formId" : formId,
       "title" : formTitle,
       "shortanswer" : true,
-  }, function (err, doc) {
-      if (err) {
-          // If it failed, return error
-          res.send("There was a problem adding the information to the database.");
-      }
-      else {
-          // And forward to success page
-          res.redirect("testquestions");
-      }
-  });
+  }
+
+  collection.findOneAndUpdate(
+    {"testFormName": currTest["testFormName"]},
+    { $addToSet: {"questions": newEntry} }, {returnOriginal: false}, function (err, doc) {
+          if (err) {
+              // If it failed, return error
+              res.send("There was a problem adding the information to the database.");
+          }
+          else {
+              // And forward to success page
+              res.redirect("testquestions");
+          }
+    });
 });
 
 //For survey
@@ -377,24 +398,28 @@ router.post('/addtruefalse2', function(req, res) {
   var correctAnswer2 = req.body.correctAnswer2;
 
   // Set our collection
-  var collection = db.get('testquestioncollection');
+  var collection = db.get('testcollection');
 
   // Submit to the DB
-  collection.insert({
+  var newEntry = {
       "correctAnswer2" : correctAnswer2,
       "formId2" : formId2,
       "title2" : formTitle2,
       "truefalse2" : true,
-  }, function (err, doc) {
-      if (err) {
-          // If it failed, return error
-          res.send("There was a problem adding the information to the database.");
-      }
-      else {
-          // And forward to success page
-          res.redirect("testquestions");
-      }
-  });
+  }
+
+  collection.findOneAndUpdate(
+    {"testFormName": currTest["testFormName"]},
+    { $addToSet: {"questions": newEntry} }, {returnOriginal: false}, function (err, doc) {
+          if (err) {
+              // If it failed, return error
+              res.send("There was a problem adding the information to the database.");
+          }
+          else {
+              // And forward to success page
+              res.redirect("testquestions");
+          }
+    });
 });
 
 
@@ -422,10 +447,10 @@ router.post('/addMatching', function(req, res) {
   var thirdValue = req.body.thirdValue;
   
   // Set our collection
-  var collection = db.get('testquestioncollection');
+  var collection = db.get('testcollection');
 
   // Submit to the DB
-  collection.insert({
+  var newEntry = {
       "formId" : formId,
       "title" : formTitle,
       "firstKey": firstKey,
@@ -435,16 +460,20 @@ router.post('/addMatching', function(req, res) {
       "thirdKey": thirdKey,
       "thirdValue": thirdValue,
 	  "matching": true
-  }, function (err, doc) {
-      if (err) {
-          // If it failed, return error
-          res.send("There was a problem adding the information to the database.");
-      }
-      else {
-          // And forward to success page
-          res.redirect("testquestions");
-      }
-  });
+  }
+
+  collection.findOneAndUpdate(
+    {"testFormName": currTest["testFormName"]},
+    { $addToSet: {"questions": newEntry} }, {returnOriginal: false}, function (err, doc) {
+          if (err) {
+              // If it failed, return error
+              res.send("There was a problem adding the information to the database.");
+          }
+          else {
+              // And forward to success page
+              res.redirect("testquestions");
+          }
+    });
 });
 
 //For survey
@@ -553,26 +582,30 @@ router.post('/addRanking', function(req, res) {
   var worstChoice = req.body.worstChoice;
 
   // Set our collection
-  var collection = db.get('testquestioncollection');
+  var collection = db.get('testcollection');
 
   // Submit to the DB
-  collection.insert({
+  var newEntry = {
       "formId" : formId,
       "title" : formTitle,
       "best": bestChoice,
       "middle": middleChoice,
       "worst": worstChoice,
 	  "ranking": true
-  }, function (err, doc) {
-      if (err) {
-          // If it failed, return error
-          res.send("There was a problem adding the information to the database.");
-      }
-      else {
-          // And forward to success page
-          res.redirect("testquestions");
-      }
-  });
+  }
+
+  collection.findOneAndUpdate(
+    {"testFormName": currTest["testFormName"]},
+    { $addToSet: {"questions": newEntry} }, {returnOriginal: false}, function (err, doc) {
+          if (err) {
+              // If it failed, return error
+              res.send("There was a problem adding the information to the database.");
+          }
+          else {
+              // And forward to success page
+              res.redirect("testquestions");
+          }
+    });
 });
 
 //For survey
@@ -624,23 +657,35 @@ router.get('/testorsurvey', function(req, res) {
   res.render('testorsurvey', { title: 'Test Or Survey'});
 });
 
-// Test questions
-router.get('/testquestions', function(req, res) {
-  res.render('testquestions', { title: 'Test Or Survey'});
+
+router.get('/testformname', function(req, res) {
+  res.render('testformname', { title: 'Name Your Form'});
 });
 
-// Question Selection for Tests
-router.get('/testentry', function(req, res) {
+// Name Your Form
+router.post('/testformname', async function(req, res) {
+
+  var testFormName = req.body.newTestFormName;
+
   var db = req.db;
 
   var collection = db.get('testcollection');
 
   collection.insert({
     "formType": "Test",
+    "testFormName": testFormName,
     "questions": []
   });
 
+  currTest = await collection.findOne({"testFormName": testFormName});
+  console.log(currTest);
+
   res.redirect('testquestions');
+});
+
+// Test questions
+router.get('/testquestions', function(req, res) {
+  res.render('testquestions', { title: 'Test Or Survey'});
 });
 
 
