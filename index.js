@@ -14,14 +14,14 @@ router.get('/helloworld', function(req,res) {
 });
 
 //Get Userlist page
-router.get('/testquestionlist', function(req,res) {
+router.get('/testquestionlist', async function(req,res) {
   var db = req.db;
   var collection = db.get('testcollection'); // 4/10/19
-  collection.find({}, {}, function(e, docs) {
-    res.render('testquestionlist', {
-      "testquestionlist" : docs
-    });
-  });
+  
+  var testToPass = await collection.findOne({"testFormName": currTest["testFormName"]});
+
+  res.render('testquestionlist', {testquestionlist: testToPass});
+
 });
 
 // List of Tests
