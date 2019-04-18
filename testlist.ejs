@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+ <head>
+   <title>Select a Test</title>
+   <link rel='stylesheet' href='/stylesheets/style.css' />
+ </head>
+ <body>
+     <h1>Test List</h1>
+     <!-- <b> Available Tests </b> <br> -->
+      <b> Enter the name of the test you'd like to take. </b> <br>
+      <input type="text" placeholder="Enter test name..." name="testName" /> <br>
+
+      <%
+      var list = '';
+      list += " <b> Available Tests </b>" + "<br>";
+      for (i = 0; i < testlist.length; i++) {
+        var strLink = testlist[i].testFormName;
+        list += strLink.link('/makerortaker') + "<br>"; // Replace makerortaker with link to specific form
+      }
+      return list;
+      %>
+
+ </body>
+</html>
