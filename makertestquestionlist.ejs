@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Question List</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>Question List</h1>
+      <%
+        var list = '';
+        for (i = 0; i < testquestionlist["questions"].length; i++) {
+          if (testquestionlist["questions"][i]["testMultChoice"]) {
+            list += '<p>' + '<strong>' + '<br>' + testquestionlist["questions"][i].title + '</strong>' + '<br>' + '<input type="radio" name="mc" value="choice1">' +testquestionlist["questions"][i]["choice 1"] + '<br>' + '<input type="radio" name="mc" value="choice2">' +testquestionlist["questions"][i]["choice 2"] + '<br>' + '<input type="radio" name="mc" value="choice3">' + testquestionlist["questions"][i]["choice 3"] + '<br>' + '<input type="radio" name="mc" value="choice4">' +testquestionlist["questions"][i]["choice 4"] + '<br>' + '<input type="radio" name="mc" value="choice5">' + testquestionlist["questions"][i]["choice 5"] + '<br>' + 'Correct Answer: ' + testquestionlist["questions"][i]["Correct Answer"] + '</p>';
+          }
+          else if (testquestionlist["questions"][i]["surveyMultChoice"]) {
+            list += '<p>' + '<strong>' + '<br>' + testquestionlist["questions"][i].title + '</strong>' + '<br>' + '<input type="radio" name="surveymc" value="choice1">' +testquestionlist["questions"][i]["choice 1"] + '<br>' + '<input type="radio" name="surveymc" value="choice2">' +testquestionlist["questions"][i]["choice 2"] + '<br>' + '<input type="radio" name="surveymc" value="choice3">' + testquestionlist["questions"][i]["choice 3"] + '<br>' + '<input type="radio" name="surveymc" value="choice4">' +testquestionlist["questions"][i]["choice 4"] + '<br>' + '<input type="radio" name="surveymc" value="choice5">' + testquestionlist["questions"][i]["choice 5"] + '</p>';
+          }
+          else if (testquestionlist["questions"][i]["truefalse"]) { 
+            list += '<p>' + '<strong>' + testquestionlist["questions"][i].title + '</strong>' + '<br>' + '<input type="radio" name="tOrF" value="true">' + "True" + '<br>' + '<input type="radio" name="tOrF" value="false">' + "False" + '</p>';
+          }
+          else if (testquestionlist["questions"][i]["truefalse2"]) { 
+            list += '<p>' + '<strong>' + testquestionlist["questions"][i].title2 + '</strong>' + '<br>' + '<input type="radio" name="tOrF" value="true">' + "True" + '<br>' + '<input type="radio" name="tOrF" value="false">' + "False" + '<br>' + "Correct Answer: " + testquestionlist["questions"][i].correctAnswer2 + '</p>';
+          }
+          else if (testquestionlist["questions"][i]["essay"]){
+            list += '<p>' + '<strong>' + testquestionlist["questions"][i].title + " The minimum number of words should be " + testquestionlist["questions"][i].minWordCount + ". " + "The maximum number of words should be " + testquestionlist["questions"][i].maxWordCount + "." + '</strong>' + '<br>' + '<input id="essayBox" type="text" style="height:150px;width:500px" placeholder="Type your essay..." name="essayBox" />' + '<br>' + '</p>';
+          }
+          else if (testquestionlist["questions"][i]["shortanswer"]){
+            list += '<p>' + '<strong>' + testquestionlist["questions"][i].title + " The minimum number of words should be " + testquestionlist["questions"][i].minWordCount + ". " + "The maximum number of words should be " + testquestionlist["questions"][i].maxWordCount + "."  + '</strong>' + '<br>' + '<input id="essayBox" type="text" style="height:50px;width:500px" placeholder="Type your answer..." name="shortAnswerBox" />' + '<br>' + '</p>';
+          }
+          else if(testquestionlist["questions"][i]["matching"]){
+            list += '<p>' + '<strong>' + testquestionlist["questions"][i].title + '</strong>' + '<br>' + '<input type="text" name="matching" placeholder="first">' + '1. ' + testquestionlist["questions"][i]["firstKey"] + "        -        " + testquestionlist["questions"][i]["firstValue"] + '<br>' + '<input type="text" name="matching" placeholder="second">' + '2. ' + testquestionlist["questions"][i]["secondKey"] + "        -        " + testquestionlist["questions"][i]["secondValue"] + '<br>' + '<input type="text" name="matching" placeholder="third">' + '3. ' + testquestionlist["questions"][i]["thirdKey"] + "        -        " + testquestionlist["questions"][i]["thirdValue"] + '</p>';
+          }
+          else if(testquestionlist["questions"][i]["ranking"]){
+            list += '<p>' + '<strong>' + testquestionlist["questions"][i].title + '</strong>' + '<br>' + '<input type="text" name="ranking" placeholder="best">' + testquestionlist["questions"][i]["best"] + '<br>' + '<input type="text" name="ranking" placeholder="middle">' + testquestionlist["questions"][i]["middle"] + '<br>' + '<input type="text" name="ranking" placeholder="worst">' + testquestionlist["questions"][i]["worst"] + '</p>';
+          }
+        }
+        list += '<form method="GET" action="/selectquestiontomodify"><button type="submit">MODIFY</button></form>';
+        return list;
+      %>
+  </body>
+</html>
